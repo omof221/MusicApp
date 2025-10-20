@@ -86,7 +86,7 @@ Asenkron sorgular, EF Core AsNoTracking kullanımı, ML model cacheleme, OpenAI 
 Proje MIT Lisansı ile yayınlanmıştır. Geliştiriciler kodu serbestçe kullanabilir, düzenleyebilir ve genişletebilir.
 
 👨‍💻 Geliştirici:
-Ömer Faruk YAŞAR — Ege Üniversitesi Bilgisayar Mühendisliği
+Ömer Faruk YAŞAR
 GitHub: github.com/omeryasar745
 E-posta: omeryasar745@gmail.com
 🌟 “Onion mimarisi, yapay zekâ ve modern .NET teknolojileriyle kişiselleştirilmiş müzik deneyimi — Bepop ile ritmini keşfet!”
