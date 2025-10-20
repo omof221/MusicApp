@@ -1,0 +1,389 @@
+﻿@model List<MusicApp.Domain.DTOs.SongDto>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr-TR" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <title>Listeler | Bepop - Müzik Web Uygulaması</title>
+    <meta name="description" content="Responsive, Bootstrap, BS4" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="/Bepop/libs/slick-carousel/slick/slick.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/libs/slick-carousel/slick/slick-theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/style.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        /* Arama kutusu için ek stil */
+        #searchBox::placeholder {
+            color: #6c757d; /* Placeholder rengi */
+        }
+
+        #searchBox:focus {
+            box-shadow: none; /* Odaklanınca gölgeyi kaldır */
+        }
+
+        .input-group-text {
+            border-right: 0; /* İkonun sağındaki çizgiyi kaldır */
+        }
+        /* Liste öğesi için ek stil */
+        .list-item .list-action .text-xs {
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body class="layout-column bg-dark">
+    <header id="header" class="page-header scroll-header fixed">
+        <div class="navbar navbar-expand-lg">
+            <a href="/" class="navbar-brand text-white ">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" fill="#000"></circle>
+                    <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1"></circle>
+                    <g class="loading-spin" stroke="currentColor" stroke-width="1" style="transform-origin: 12px 12px">
+                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                    </g>
+                </svg>
+                <span class="hidden-folded d-inline l-s-n-1x ">Bepop</span>
+            </a>
+            <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarCollapse">
+                <ul class="navbar-nav" data-nav>
+                    <li class="nav-item">
+                        <a href="/Home/Index" class="nav-link">
+                            <span class="nav-text">Ana Sayfa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Home/Charts" class="nav-link active">
+                            <span class="nav-text">Listeler</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Home/Artists" class="nav-link">
+                            <span class="nav-text">Sanatçılar</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="nav navbar-menu order-1 order-lg-2">
+                <li class="nav-item d-none d-sm-block">
+                    <a class="nav-link px-2" data-toggle="fullscreen" data-plugin="fullscreen">
+                        <i data-feather="maximize"></i>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link px-2">
+                        <i data-feather="upload" class="d-lg-none"></i><span class="btn btn-rounded btn-sm gd-primary text-white d-none d-lg-block">Yükle</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color">
+                        <span class="avatar w-24"><img src="/Bepop/assets/img/a2.jpg" alt="..."></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right mt-3 animate fadeIn">
+                        <a class="dropdown-item" href="#"><span>Profil</span></a>
+                        <a class="dropdown-item" href="#"><span>Şarkılar</span></a>
+                        <a class="dropdown-item" href="#"><span>Albümler</span></a>
+                        <a class="dropdown-item" href="#"><span>Beğenilenler</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Çıkış Yap</a>
+                    </div>
+                </li>
+                <li class="nav-item d-lg-none">
+                    <a href="#" class="nav-link px-2" data-toggle="collapse" data-toggle-class data-target="#navbarCollapse">
+                        <i data-feather="menu"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div id="main" class="layout-row flex">
+        <div id="content" class="flex ">
+            <div>
+                <div class="page-content page-container" id="page-content">
+                    <div class="padding sr" id="list" data-plugin="list" data-page="50">
+                        <div class="page-hero">
+                            <div class="media bg-media">
+                                <div class="media-content" style="background-image:url(/Bepop/assets/img/b10.jpg)"> </div>
+                            </div>
+                            <div class="pos-rlt">
+                                <h1 class="display-3 font-weight-bold text-white">Haftalık Müzik Listeleri</h1>
+                            </div>
+                        </div>
+                        <div class="d-lg-flex pos-rlt">
+                            <div class="flex">
+                                <div class="heading pt-5 pb-3 d-flex">
+                                    <div>
+                                        <div class="text-muted sr-item">Popüler</div>
+                                        <h5 class="text-highlight sr-item">Şarkılar</h5>
+                                    </div>
+                                    <span class="flex"></span>
+                                </div>
+
+                                <div class="input-group mb-4 sr-item">
+                                    <span class="input-group-text bg-dark border-secondary text-white">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" id="searchBox" class="form-control form-control-theme bg-dark text-white border-secondary"
+                                           placeholder="Şarkı veya sanatçı ara..." />
+                                </div>
+                                <div class="pos-rlt z-index-1">
+                                    <div class="d-flex py-2 sr-item">
+                                        <div class="dropdown my-2">
+                                            <button class="btn btn-outline-light sorting w-sm w-auto-xs text-align-auto" data-toggle="dropdown"><span>Yeni</span></button>
+                                            <div class="dropdown-menu">
+                                                <a href="#" class="dropdown-item sort" data-sort="num" data-order="desc">Popüler</a>
+                                                <a href="#" class="dropdown-item sort" data-sort="author" data-order="desc">Yeni</a>
+                                            </div>
+                                        </div>
+                                        <div class="flex"></div>
+                                        <div class="dropdown my-2 mx-2">
+                                            <button class="btn btn-outline-light sorting w-sm w-auto-xs text-align-auto" data-toggle="dropdown"><span>Tüm Ülkeler</span></button>
+                                            <div class="dropdown-menu" id="filter-tag">
+                                            </div>
+                                        </div>
+                                        <div class="dropdown my-2">
+                                            <button class="btn btn-outline-light sorting w-sm w-auto-xs text-align-auto" data-toggle="dropdown"><span>Tüm Türler</span></button>
+                                            <div class="dropdown-menu dropdown-menu-right scrollable hover" id="filter-category" style="max-height: 310px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row list list-row list-index" id="songList">
+                                        @foreach (var song in Model)
+                                        {
+                                            <div class="col-12 song-item">
+                                                <div class="list-item r">
+                                                    <div class="media">
+                                                        <a href="#" class="ajax media-content"
+                                                           style="background-image:url('@(string.IsNullOrEmpty(song.CoverUrl) ? "/Bepop/assets/img/default-cover.jpg" : song.CoverUrl)')">
+                                                        </a>
+                                                        <div class="media-action media-action-overlay">
+                                                            <button class="btn btn-icon no-bg no-shadow hide-row" data-toggle-class>
+                                                                <i data-feather="heart" class="active-fill text-danger"></i>
+                                                            </button>
+                                                            <button class="btn btn-raised btn-icon btn-rounded bg--white btn-play"></button>
+                                                            <button class="btn btn-icon no-bg no-shadow hide-row btn-more" data-toggle="dropdown">
+                                                                <i data-feather="more-horizontal"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-content">
+                                                        <div class="list-body">
+                                                            <a href="#" class="list-title title ajax h-1x">
+                                                                @song.Title
+                                                            </a>
+                                                            <a href="#" class="list-subtitle d-block text-muted h-1x subtitle ajax ">
+                                                                @song.Artist
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-action show-row">
+                                                        <div class="d-flex align-items-center">
+                                                            <small class="text-muted text-xs mx-2">
+                                                                🎚 Lvl: @song.Level
+                                                            </small>
+                                                            <small class="text-muted text-xs mx-2">
+                                                                🎵 @song.Genre
+                                                            </small>
+                                                            <button class="btn btn-icon no-bg no-shadow" data-toggle-class>
+                                                                <i data-feather="heart" class="active-primary text-danger"></i>
+                                                            </button>
+                                                            <button class="btn btn-icon no-bg no-shadow btn-more" data-toggle="dropdown">
+                                                                <i data-feather="more-horizontal"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    @if (!Model.Any())
+                                    {
+                                        <div class="alert alert-secondary bg-transparent border border-secondary text-center mt-4 text-light no-result">
+                                            <i class="bi bi-emoji-neutral"></i> Henüz şarkı bulunamadı.
+                                        </div>
+                                    }
+
+                                    <div class="no-result hide mt-4">
+                                        <div class="alert alert-warning text-center">
+                                            <i class="bi bi-exclamation-triangle"></i> Aradığınız kriterlere uygun şarkı bulunamadı.
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex py-3 justify-content-center">
+                                        <ul class="pagination pagination-sm"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="min-width: 4rem"></div>
+                            <div class="w-xl w-auto-sm no-shrink">
+                                <div class="sticky">
+                                    <div class="list mb-5">
+                                        <div class="list-item list-overlay r">
+                                            <div class="media ">
+                                                <a href="#" class="ajax media-content " style="background-image:url(/Bepop/assets/img/b16.jpg)">
+                                                </a>
+                                                <div class="media-action ">
+                                                </div>
+                                            </div>
+                                            <div class="list-content p-5 text-center">
+                                                <div class="list-body ">
+                                                    <a href="#" class="list-title title ajax h3 font-weight-bold">
+                                                        Hip-Hop Listesi 100
+                                                    </a>
+                                                    <a href="#" class="list-subtitle d-block text-muted h-1x subtitle ajax ">
+                                                        Şu anın en popüler rap şarkıları.
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6 class="text text-muted sr-item">Popüler Şarkılar</h6>
+                                    <div class="row list-row">
+                                        <div class="col-12" data-id="438654695">
+                                            <div class="list-item r">
+                                                <div class="media ">
+                                                    <a href="#" class="ajax media-content " style="background-image:url(/Bepop/assets/img/c23.jpg)"></a>
+                                                    <div class="media-action ">
+                                                        <button class="btn btn-icon no-bg no-shadow hide-row" data-toggle-class><i data-feather="heart" class="active-fill"></i></button>
+                                                        <button class="btn btn-raised btn-icon btn-rounded bg--white btn-play"></button>
+                                                        <button class="btn btn-icon no-bg no-shadow hide-row btn-more" data-toggle="dropdown"><i data-feather="more-horizontal"></i></button>
+                                                        <div class="dropdown-menu dropdown-menu-right"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="list-content ">
+                                                    <div class="list-body ">
+                                                        <a href="#" class="list-title title ajax h-1x">Say My Name</a>
+                                                        <a href="#" class="list-subtitle d-block text-muted h-1x subtitle ajax ">David Guetta &amp; Bebe Rexha &amp; J Balvin</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12" data-id="434179154">
+                                            <div class="list-item r">
+                                                <div class="media ">
+                                                    <a href="#" class="ajax media-content " style="background-image:url(/Bepop/assets/img/c31.jpg)"></a>
+                                                    <div class="media-action "><button class="btn btn-icon no-bg no-shadow hide-row" data-toggle-class><i data-feather="heart" class="active-fill"></i></button><button class="btn btn-raised btn-icon btn-rounded bg--white btn-play"></button><button class="btn btn-icon no-bg no-shadow hide-row btn-more" data-toggle="dropdown"><i data-feather="more-horizontal"></i></button><div class="dropdown-menu dropdown-menu-right"></div></div>
+                                                </div>
+                                                <div class="list-content "><div class="list-body "><a href="#" class="list-title title ajax h-1x">Arms Around You</a><a href="#" class="list-subtitle d-block text-muted h-1x subtitle ajax ">XXXTENTACION &amp; Lil Pump Feat. Swae Lee &amp; Maluma</a></div></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12" data-id="416737862">
+                                            <div class="list-item r">
+                                                <div class="media ">
+                                                    <a href="#" class="ajax media-content " style="background-image:url(/Bepop/assets/img/c11.jpg)"></a>
+                                                    <div class="media-action "><button class="btn btn-icon no-bg no-shadow hide-row" data-toggle-class><i data-feather="heart" class="active-fill"></i></button><button class="btn btn-raised btn-icon btn-rounded bg--white btn-play"></button><button class="btn btn-icon no-bg no-shadow hide-row btn-more" data-toggle="dropdown"><i data-feather="more-horizontal"></i></button><div class="dropdown-menu dropdown-menu-right"></div></div>
+                                                </div>
+                                                <div class="list-content "><div class="list-body "><a href="#" class="list-title title ajax h-1x">MIA</a><a href="#" class="list-subtitle d-block text-muted h-1x subtitle ajax ">Bad Bunny Feat. Drake</a></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="footer" class="page-footer ">
+        <div class="padding bg-dark  b-t">
+            <div class="page-container">
+                <div class="py-5 text-inherit text-hover-primary">
+                    <div class="row mb-5">
+                        <div class="col-6 col-md-4">
+                            <div class="mb-3">
+                                <a href="/" class="navbar-brand text-white ">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" fill="#000"></circle><circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1"></circle><g class="loading-spin" stroke="currentColor" stroke-width="1" style="transform-origin: 12px 12px"><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></g></svg>
+                                    <span class="hidden-folded d-inline l-s-n-1x ">Bepop</span>
+                                </a>
+                            </div>
+                            <div class="px-1">
+                                <div class="dropdown mt-5 ml-md-5">
+                                    <button class="btn w-sm btn-dark text-align-auto b-a sorting" data-toggle="dropdown">Türkçe</button>
+                                    <div class="dropdown-menu"><a href="#" class="dropdown-item">Türkçe</a><a href="#" class="dropdown-item">English</a><a href="#" class="dropdown-item">Français</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Sayfalar</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight"><li><a href="#">Sanatçılar</a></li><li><a href="#">Listeler</a></li><li><a href="#">Türler</a></li></ul>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Senin Bepop'un</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight"><li><a href="#">Profil</a></li><li><a href="#">Albümler</a></li><li><a href="#">Şarkılar</a></li></ul>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Yardım</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight"><li><a href="#">Dokümantasyon</a></li><li><a href="#">Değişiklik Günlüğü</a></li></ul>
+                        </div>
+                        <div class="col-6 col-md-2 text-md-right">
+                            <h5 class="mb-3 text-muted">Bizi Takip Edin</h5><a href="#">Fb</a> <a href="#">Tw</a> <a href="#">Ig</a>
+                        </div>
+                    </div>
+                    <div class="text-center py-5">
+                        <span class="text-muted text-sm">&copy; Telif Hakkı. Bepop - Müzik Web Uygulaması, Tüm hakları saklıdır.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div data-plugin="plyr" class="plyrist plyrist_audio plyr-list-popup player bg-overlay b-t fixed-bottom" id="plyrist">
+        <audio controls hidden></audio>
+        <div class="plyr-list bg-dark-overlay" style="display:none">
+        </div>
+    </div>
+    <script src="/Bepop/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/Bepop/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/Bepop/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/Bepop/libs/pjax/pjax.min.js"></script>
+    <script src="/Bepop/assets/js/ajax.js"></script>
+    <script src="/Bepop/assets/js/lazyload.config.js"></script>
+    <script src="/Bepop/assets/js/lazyload.js"></script>
+    <script src="/Bepop/assets/js/plugin.js"></script>
+    <script src="/Bepop/libs/scrollreveal/dist/scrollreveal.min.js"></script>
+    <script src="/Bepop/libs/slick-carousel/slick/slick.min.js"></script>
+    <script src="/Bepop/libs/feather-icons/dist/feather.min.js"></script>
+    <script src="/Bepop/assets/js/theme.js"></script>
+    <script>
+        document.getElementById("searchBox").addEventListener("input", function () {
+            const query = this.value.toLowerCase().trim();
+            const songItems = document.querySelectorAll(".song-item");
+            const noResultDiv = document.querySelector(".no-result");
+            let found = false;
+
+            songItems.forEach(item => {
+                const titleElement = item.querySelector(".list-title");
+                const artistElement = item.querySelector(".list-subtitle");
+                const title = titleElement ? titleElement.innerText.toLowerCase() : "";
+                const artist = artistElement ? artistElement.innerText.toLowerCase() : "";
+
+                const isMatch = title.includes(query) || artist.includes(query);
+                item.style.display = isMatch ? "" : "none";
+                if (isMatch) {
+                    found = true;
+                }
+            });
+
+            // "Sonuç bulunamadı" mesajını göster/gizle
+            if (noResultDiv) {
+                 noResultDiv.classList.toggle('hide', found); // Eğer bulunduysa 'hide' sınıfını ekle, bulunamadıysa kaldır
+            }
+
+            // Eğer model başlangıçta boşsa gösterilen mesajı arama yapıldığında gizle
+             const initialEmptyMessage = document.querySelector('.alert:not(.no-result)');
+             if (initialEmptyMessage && query !== '') {
+                 initialEmptyMessage.style.display = 'none';
+             } else if (initialEmptyMessage && query === '' && @Model.Count() == 0) {
+                 initialEmptyMessage.style.display = 'block'; // Arama kutusu boşsa ve model boşsa ilk mesajı göster
+                 if(noResultDiv) noResultDiv.classList.add('hide'); // no-result mesajını gizle
+             }
+
+
+        });
+    </script>
+</body>
+</html>

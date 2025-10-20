@@ -1,0 +1,239 @@
+﻿@model List<MusicApp.Domain.DTOs.ArtistDto>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <title>Artists | Bepop - Music Web Application</title>
+    <meta name="description" content="Responsive, Bootstrap, BS4" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <link rel="stylesheet" href="/Bepop/libs/slick-carousel/slick/slick.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/libs/slick-carousel/slick/slick-theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/style.css" type="text/css" />
+</head>
+<body class="layout-column bg-dark">
+
+    <header id="header" class="page-header scroll-header fixed">
+        <div class="navbar navbar-expand-lg">
+            <a href="/" class="navbar-brand text-white">
+                <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" fill="#000"></circle>
+                    <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1"></circle>
+                    <g class="loading-spin" stroke="currentColor" stroke-width="1" style="transform-origin: 12px 12px">
+                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                    </g>
+                </svg>
+                <span class="hidden-folded d-inline l-s-n-1x ">Bepop</span>
+            </a>
+            <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarCollapse">
+                <ul class="navbar-nav" data-nav>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><span class="nav-text">Discover</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><span class="nav-text">Charts</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><span class="nav-text">Genres</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active"><span class="nav-text">Artists</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link"><span class="nav-text">Blog</span></a>
+                    </li>
+                </ul>
+                <form class="input-group m-2 my-lg-0 ">
+                    <span class="input-group-prepend">
+                        <button type="button" class="btn no-shadow no-bg px-0"><i data-feather="search"></i></button>
+                    </span>
+                    <input type="text" class="form-control no-border no-shadow no-bg typeahead" placeholder="Search...">
+                </form>
+            </div>
+            <ul class="nav navbar-menu order-1 order-lg-2">
+                <li class="nav-item d-none d-sm-block">
+                    <a class="nav-link px-2" data-toggle="fullscreen" data-plugin="fullscreen">
+                        <i data-feather="maximize"></i>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link px-2">
+                        <i data-feather="upload" class="d-lg-none"></i><span class="btn btn-rounded btn-sm gd-primary text-white d-none d-lg-block">Upload</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color">
+                        <span class="avatar w-24"><img src="/Bepop/assets/img/a0.jpg" alt="..."></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right mt-3 animate fadeIn">
+                        <a class="dropdown-item" href="#"><span>Profile</span></a>
+                        <a class="dropdown-item" href="#"><span>Tracks</span></a>
+                        <a class="dropdown-item" href="#"><span>Albums</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Sign out</a>
+                    </div>
+                </li>
+                <li class="nav-item d-lg-none">
+                    <a href="#" class="nav-link px-2" data-toggle="collapse" data-toggle-class data-target="#navbarCollapse">
+                        <i data-feather="menu"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div id="main" class="layout-row flex">
+        <div id="content" class="flex ">
+            <div>
+                <div class="page-content page-container" id="page-content">
+                    <div class="padding sr" id="list" data-plugin="list">
+
+                        <div class="page-hero">
+                            <div class="media bg-media">
+                                <div class="media-content" style="background-image:url(/Bepop/assets/img/b6.jpg)"></div>
+                            </div>
+                            <div class="pos-rlt">
+                                <h1 class="display-3 font-weight-bold text-white">@Model.Count() Artists</h1>
+                            </div>
+                        </div>
+                        <div class="d-lg-flex pos-rlt">
+                            <div class="flex">
+                                <div class="pb-4 d-flex sr-item" id="filter-tag">
+                                    <div class="no-shrink my-2">Countries</div>
+                                    <div class="mx-3">
+                                        <a href="#" class="btn btn-sm btn-white m-1">All countries</a>
+                                        <a href="#" class="btn btn-sm btn-white m-1">Australia</a>
+                                        <a href="#" class="btn btn-sm btn-white m-1">Canada</a>
+                                        <a href="#" class="btn btn-sm btn-white m-1">France</a>
+                                        <a href="#" class="btn btn-sm btn-white m-1">USA</a>
+                                        <a href="#" class="btn btn-sm btn-white m-1">United Kingdom</a>
+                                    </div>
+                                </div>
+                                <div class="row list media-circle">
+                                    @foreach (var artist in Model)
+                                    {
+                                        <div class="col-sm-6 col-md-4 col-lg-3 py-3">
+
+                                            <div class="list-item r">
+                                                <div class="media">
+                                                    <a href="#" class="ajax media-content"
+                                                       style="background-image:url('@artist.ImageUrl')">
+                                                    </a>
+                                                </div>
+                                                <div class="list-content text-center">
+                                                    <div class="list-body">
+                                                        <a href="#" class="list-subtitle d-block text-white fw-bold h-1x subtitle ajax">
+                                                            @artist.FullName
+                                                        </a>
+
+                                                        <p class="text-muted small mb-1 mt-2">🌍 @artist.Country</p>
+                                                        <small class="text-info">🎵 @artist.Genre</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="d-flex py-3 justify-content-center">
+                                    <ul class="pagination pagination-sm"></ul>
+                                </div>
+                            </div>
+
+                            <div class="w-xl w-auto-sm no-shrink">
+                                <div class="sticky">
+                                    <h6 class="text text-muted sr-item">Top tracks</h6>
+                                    <div class="row list-row">
+                                        <div class="col-12" data-id="447549756">
+                                            <div class="list-item r">
+                                                <div class="media "><a href="#" class="ajax media-content " style="background-image:url(/Bepop/assets/img/c33.jpg)"></a></div>
+                                                <div class="list-content "><div class="list-body "><a href="#" class="list-title title ajax h-1x">thank u, next</a><a href="#" class="list-subtitle d-block text-muted h-1x subtitle ajax ">Ariana Grande</a></div></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12" data-id="441677734">
+                                            <div class="list-item r">
+                                                <div class="media "><a href="#" class="ajax media-content " style="background-image:url(/Bepop/assets/img/c32.jpg)"></a></div>
+                                                <div class="list-content "><div class="list-body "><a href="#" class="list-title title ajax h-1x">Uproar</a><a href="#" class="list-subtitle d-block text-muted h-1x subtitle ajax ">Lil Wayne</a></div></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12" data-id="418888835">
+                                            <div class="list-item r">
+                                                <div class="media "><a href="#" class="ajax media-content " style="background-image:url(/Bepop/assets/img/c7.jpg)"></a></div>
+                                                <div class="list-content "><div class="list-body "><a href="#" class="list-title title ajax h-1x">High Hopes</a><a href="#" class="list-subtitle d-block text-muted h-1x subtitle ajax ">Panic! At The Disco</a></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer" class="page-footer ">
+        <div class="padding bg-dark b-t">
+            <div class="page-container">
+                <div class="py-5 text-inherit text-hover-primary">
+                    <div class="row mb-5">
+                        <div class="col-6 col-md-4">
+                            <div class="mb-3">
+                                <a href="#" class="navbar-brand text-white ">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" fill="#000"></circle>
+                                        <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1"></circle>
+                                        <g class="loading-spin" stroke="currentColor" stroke-width="1" style="transform-origin: 12px 12px"><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></g>
+                                    </svg>
+                                    <span class="hidden-folded d-inline l-s-n-1x ">Bepop</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Pages</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight">
+                                <li><a href="#">Artists</a></li>
+                                <li><a href="#">Top Charts</a></li>
+                                <li><a href="#">Genres</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Your Bepop</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight">
+                                <li><a href="#">Profile</a></li>
+                                <li><a href="#">Albums</a></li>
+                                <li><a href="#">Tracks</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Help</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight">
+                                <li><a href="#">Documentation</a></li>
+                                <li><a href="#">Changelog</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="text-center py-5">
+                        <span class="text-muted text-sm">&copy; Copyright. Bepop - Music Web Application, All rights reserved.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/Bepop/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/Bepop/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/Bepop/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/Bepop/libs/pjax/pjax.min.js"></script>
+    <script src="/Bepop/assets/js/ajax.js"></script>
+    <script src="/Bepop/assets/js/lazyload.config.js"></script>
+    <script src="/Bepop/assets/js/lazyload.js"></script>
+    <script src="/Bepop/assets/js/plugin.js"></script>
+    <script src="/Bepop/libs/scrollreveal/dist/scrollreveal.min.js"></script>
+    <script src="/Bepop/libs/slick-carousel/slick/slick.min.js"></script>
+    <script src="/Bepop/libs/feather-icons/dist/feather.min.js"></script>
+    <script src="/Bepop/assets/js/theme.js"></script>
+</body>
+</html>

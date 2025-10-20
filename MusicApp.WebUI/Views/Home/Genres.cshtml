@@ -1,0 +1,337 @@
+﻿@model MusicApp.WebUI.Models.GenrePageViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr-TR" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <title>Genres | Bepop - Music Web Application</title>
+    <meta name="description" content="Responsive, Bootstrap, BS4" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <link rel="stylesheet" href="/Bepop/libs/slick-carousel/slick/slick.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/libs/slick-carousel/slick/slick-theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/style.css" type="text/css" />
+</head>
+
+<body class="layout-column bg-dark text-white">
+
+    <header id="header" class="page-header scroll-header fixed">
+        <div class="navbar navbar-expand-lg">
+            <a href="/Home/Index" class="navbar-brand text-white">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" fill="#000"></circle>
+                    <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1"></circle>
+                </svg>
+                <span class="hidden-folded d-inline l-s-n-1x">Bepop</span>
+            </a>
+            <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarCollapse">
+                <ul class="navbar-nav" data-nav>
+                    <li class="nav-item"><a href="/Home/Discover" class="nav-link"><span class="nav-text">Discover</span></a></li>
+                    <li class="nav-item"><a href="/Home/AllSongs" class="nav-link"><span class="nav-text">Charts</span></a></li>
+                    <li class="nav-item"><a href="/Home/Genres" class="nav-link active"><span class="nav-text">Genres</span></a></li>
+                    <li class="nav-item"><a href="/Home/Artists" class="nav-link"><span class="nav-text">Artists</span></a></li>
+                    <li class="nav-item"><a href="/Home/MainPage" class="nav-link"><span class="nav-text">Blog</span></a></li>
+                </ul>
+                <form class="input-group m-2 my-lg-0">
+                    <span class="input-group-prepend">
+                        <button type="button" class="btn no-shadow no-bg px-0"><i data-feather="search"></i></button>
+                    </span>
+                    <input type="text" class="form-control no-border no-shadow no-bg" placeholder="Search..." />
+                </form>
+            </div>
+            <ul class="nav navbar-menu order-1 order-lg-2">
+                <li class="nav-item d-none d-sm-block">
+                    <a class="nav-link px-2" data-toggle="fullscreen" data-plugin="fullscreen"><i data-feather="maximize"></i></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link px-2">
+                        <i data-feather="upload" class="d-lg-none"></i>
+                        <span class="btn btn-rounded btn-sm gd-primary text-white d-none d-lg-block">Upload</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color">
+                        <span class="avatar w-24"><img src="/Bepop/assets/img/a1.jpg" alt="..."></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right mt-3 animate fadeIn">
+                        <a class="dropdown-item" href="#"><span>Profile</span></a>
+                        <a class="dropdown-item" href="#"><span>Tracks</span></a>
+                        <a class="dropdown-item" href="#"><span>Albums</span></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Sign out</a>
+                    </div>
+                </li>
+                <li class="nav-item d-lg-none">
+                    <a href="#" class="nav-link px-2" data-toggle="collapse" data-target="#navbarCollapse"><i data-feather="menu"></i></a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div id="main" class="layout-row flex">
+        <div id="content" class="flex">
+            <div class="page-content page-container" id="page-content">
+                <div class="padding sr" id="list" data-plugin="list">
+
+                    <div class="mb-5 mt-5">
+                        <h5 class="text-highlight mb-3">🤖 AI Tarafından Önerilen Şarkılar</h5>
+                        <p class="text-muted">@Model.AiMessage</p>
+                        <div class="row">
+                            @if (Model.AiRecommendations != null && Model.AiRecommendations.Any())
+                            {
+                                foreach (var song in Model.AiRecommendations)
+                                {
+                                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                                        <div class="list-item r mb-5">
+                                      
+
+                                      
+                                            <div class="media">
+                                                <a href="#" class="media-content"
+                                                   style="background-image:url('@song.CoverUrl'); background-size: cover; background-position: center; min-height: 150px;">
+                                                 
+                                                </a>
+                                            </div>
+
+                                            <div class="list-content text-center">
+                                                <div class="list-body">
+                                                    <a href="#" class="list-title title h-1x">@song.Title</a>
+                                                    <a href="#" class="list-subtitle d-block text-muted h-1x">@song.Artist</a>
+                                                    <small class="text-info d-block mt-1">🎚️ Level: @song.Level | ⭐ @song.Score.ToString("0.00")</small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted">Henüz önerilen şarkı bulunamadı 🎵</p>
+                            }
+                        </div>
+                    </div>
+
+                    <hr class="border-secondary" />
+
+                    <div class="pos-rlt">
+                        <div class="py-5">
+                            <div class="heading pt-5 pb-3 d-flex">
+                                <div>
+                                    <h5 class="text-highlight sr-item">Filtrele ve Keşfet</h5>
+                                </div>
+                                <span class="flex"></span>
+                            </div>
+                            <div class="py-2 d-flex sr-item" id="filter-tag">
+                                <div class="no-shrink my-2">Ülkeler</div>
+                                <div class="mx-3">
+                                    <a href="#" class="btn btn-sm btn-white m-1">Tüm Ülkeler</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Australia</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Canada</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">France</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Germany</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">USA</a>
+                                </div>
+                            </div>
+                            <div class="py-2 d-flex sr-item" id="filter-category">
+                                <div class="no-shrink my-2">Türler</div>
+                                <div class="mx-3">
+                                    <a href="#" class="btn btn-sm btn-white m-1">Tüm Türler</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Acoustic</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Ambient</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Blues</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Classical</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Country</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Electronic</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Hip-Hop</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Indie</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Jazz</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Pop</a>
+                                    <a href="#" class="btn btn-sm btn-white m-1">Rock</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="py-4">
+                        <h5 class="text-highlight mb-3">🎶 Dineleme Alışkanlığınıza Göre Oluşturulmuş Kişisel Dinleme Listeniz</h5>
+                        <div class="row row-lg">
+
+                            @if (Model.LevelSongs != null && Model.LevelSongs.Any())
+                            {
+                                @foreach (var song in Model.LevelSongs)
+                                {
+                                    <div class="col-6 col-sm-4 col-md-3 col-lg-2" data-id="@song.Id" data-category="@song.Genre" data-tag="@song.Level">
+                                        <div class="list-item list-hover r mb-5">
+                                            <div class="media">
+                                                <a href="#" class="media-content play-song"
+                                                   data-id="@song.Id"
+                                                   style="background-image:url('@song.CoverUrl'); background-size:cover; background-position:center;">
+                                                </a>
+                                                <div class="media-action media-action-overlay">
+                                                    <button class="btn btn-icon no-bg no-shadow hide-row" data-toggle-class>
+                                                        <i data-feather="heart" class="active-fill"></i>
+                                                    </button>
+                                                    <button class="btn btn-raised btn-icon btn-rounded bg--white btn-play play-song" data-id="@song.Id"></button>
+                                                    <button class="btn btn-icon no-bg no-shadow hide-row btn-more" data-toggle="dropdown">
+                                                        <i data-feather="more-horizontal"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right"></div>
+                                                </div>
+                                            </div>
+                                            <div class="list-content text-center">
+                                                <div class="list-body">
+                                                    <a href="#" class="list-title title h-1x">@song.Title</a>
+                                                    <a href="#" class="list-subtitle d-block text-muted h-1x">@song.Artist</a>
+                                                    <small class="text-info d-block mt-1">🎚️ Level: @song.Level | @song.Genre</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="no-result text-center py-5 col-12">
+                                    <h5>Hiç şarkı bulunamadı 🎵</h5>
+                                    <small>Seviyene uygun şarkı bulunamadı.</small>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer" class="page-footer" style="position: static;">
+        <div class="padding bg-dark b-t">
+            <div class="page-container">
+                <div class="py-5 text-inherit text-hover-primary">
+                    <div class="row mb-5">
+                        <div class="col-6 col-md-4">
+                            <div class="mb-3">
+                                <a href="/Home/Index" class="navbar-brand text-white">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" fill="#000"></circle>
+                                        <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1"></circle>
+                                    </svg>
+                                    <span class="hidden-folded d-inline l-s-n-1x">Bepop</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Pages</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight">
+                                <li><a href="/Home/Artists">Artists</a></li>
+                                <li><a href="/Home/Charts">Top Charts</a></li>
+                                <li><a href="/Home/Genres">Genres</a></li>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="/Home/Blog">Blog</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Your Bepop</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight">
+                                <li><a href="#">Profile</a></li>
+                                <li><a href="#">Albums</a></li>
+                                <li><a href="#">Tracks</a></li>
+                                <li><a href="#">Playlist</a></li>
+                                <li><a href="#">Liked</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <h5 class="mb-3 text-muted">Help</h5>
+                            <ul class="list-unstyled l-h-2x text-highlight">
+                                <li><a href="#">Documentation</a></li>
+                                <li><a href="#">Changelog</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6 col-md-2 text-md-right">
+                            <h5 class="mb-3 text-muted">Follow Us</h5>
+                            <a href="#">Fb</a>
+                            <a href="#">Tw</a>
+                            <a href="#">Ig</a>
+                        </div>
+                    </div>
+                    <div class="text-center py-5">
+                        <span class="text-muted text-sm">&copy; 2025 Bepop - Music Web Application</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/Bepop/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/Bepop/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/Bepop/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/Bepop/libs/pjax/pjax.min.js"></script>
+    <script src="/Bepop/assets/js/ajax.js"></script>
+
+    <script src="/Bepop/assets/js/lazyload.config.js"></script>
+    <script src="/Bepop/assets/js/lazyload.js"></script>
+    <script src="/Bepop/assets/js/plugin.js"></script>
+
+    <script src="/Bepop/libs/scrollreveal/dist/scrollreveal.min.js"></script>
+    <script src="/Bepop/libs/slick-carousel/slick/slick.min.js"></script>
+
+    <script src="/Bepop/libs/feather-icons/dist/feather.min.js"></script>
+    <script src="/Bepop/assets/js/theme.js"></script>
+
+    <script>
+        // DOM yüklendiğinde çalış
+        document.addEventListener("DOMContentLoaded", function () {
+            const token = '@Context.Session.GetString("token")';
+            if (!token) {
+                console.warn("⚠️ Token bulunamadı. Dinleme kayıtları çalışmayabilir.");
+            }
+
+            // Çalma butonlarına tıklama olayını ekleyen fonksiyon
+            function attachPlayListeners() {
+                document.querySelectorAll(".play-song").forEach(btn => {
+                    // Butona daha önce event eklenmemişse ekle (pjax kaynaklı çift eklemeyi önle)
+                    if (!btn.hasAttribute('data-listener-attached')) {
+                        btn.setAttribute('data-listener-attached', 'true');
+                        btn.addEventListener("click", async (e) => {
+                            e.preventDefault();
+                            const songId = btn.dataset.id;
+
+                            if (!token) {
+                                console.error("❌ Dinleme kaydı için token yok.");
+                                return;
+                            }
+
+                            console.log("▶️ Oynatılıyor (kayıt gönderiliyor):", songId);
+                            try {
+                                await fetch(`https://localhost:7273/api/songs/play/${songId}`, {
+                                    method: "POST",
+                                    headers: { "Authorization": `Bearer ${token}` }
+                                });
+                                console.log("✅ Dinleme kaydedildi:", songId);
+                            } catch (err) {
+                                console.error("❌ Dinleme kaydı hatası:", err);
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Sayfa ilk yüklendiğinde butonlara event'leri ekle
+            attachPlayListeners();
+
+            // Örnek şablonda pjax kütüphanesi var.
+            // Sayfa pjax ile (ajax) yüklendiğinde butonlar yenileneceği için event'leri tekrar eklememiz gerekir.
+            if (window.pjax) {
+                document.addEventListener('pjax:complete', attachPlayListeners);
+            }
+        });
+    </script>
+</body>
+</html>

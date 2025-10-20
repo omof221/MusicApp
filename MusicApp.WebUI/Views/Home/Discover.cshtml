@@ -1,0 +1,256 @@
+﻿@model List<MusicApp.Domain.DTOs.RecommendationItemDto> // AI Önerileri için Model
+@{
+    Layout = null;
+    // Diğer şarkı listelerini ViewBag'den alıyoruz
+    var allSongs = ViewBag.AllSongs as List<MusicApp.Domain.DTOs.SongDto> ?? new();
+    var latestSongs = ViewBag.LatestSongs as List<MusicApp.Domain.DTOs.LatestSongDto> ?? new(); // Son eklenenler
+}
+
+<!DOCTYPE html>
+<html lang="tr-TR" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <title>Discover | Bepop - Music Web Application</title>
+    <meta name="description" content="Responsive, Bootstrap, BS4, AI-powered music recommendations" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <link rel="stylesheet" href="/Bepop/libs/slick-carousel/slick/slick.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/libs/slick-carousel/slick/slick-theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="/Bepop/assets/css/style.css" type="text/css" />
+
+    @* Bootstrap Icons için CDN (ikonlar için gerekli) *@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    @* Ek CSS (List group kenarlık rengi vb.) *@
+    <style>
+        .list-group-item {
+            border-color: rgba(255, 255, 255, 0.1) !important; /* Kenarlık rengini ayarla */
+        }
+
+            .list-group-item:last-child {
+                border-bottom-width: 0 !important; /* Son elemanın alt kenarlığını kaldır */
+            }
+    </style>
+</head>
+
+<body class="layout-column bg-dark text-white">
+
+    <header id="header" class="page-header scroll-header fixed">
+        <div class="navbar navbar-expand-lg">
+            <a href="/Home/Index" class="navbar-brand text-white"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" fill="#000"></circle><circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1"></circle></svg><span class="hidden-folded d-inline l-s-n-1x">Bepop</span></a>
+            <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarCollapse">
+                <ul class="navbar-nav" data-nav>
+                    <li class="nav-item"><a href="/Home/Discover" class="nav-link active"><span class="nav-text">Discover</span></a></li>
+                    <li class="nav-item"><a href="/Home/Charts" class="nav-link"><span class="nav-text">Charts</span></a></li>
+                    <li class="nav-item"><a href="/Home/Genres" class="nav-link"><span class="nav-text">Genres</span></a></li>
+                    <li class="nav-item"><a href="/Home/Artists" class="nav-link"><span class="nav-text">Artists</span></a></li>
+                    <li class="nav-item"><a href="/Home/Blog" class="nav-link"><span class="nav-text">Blog</span></a></li>
+                </ul>
+                <form class="input-group m-2 my-lg-0"><span class="input-group-prepend"><button type="button" class="btn no-shadow no-bg px-0"><i data-feather="search"></i></button></span><input type="text" class="form-control no-border no-shadow no-bg typeahead" placeholder="Search..." data-plugin="typeahead"></form>
+            </div>
+            <ul class="nav navbar-menu order-1 order-lg-2">
+                <li class="nav-item d-none d-sm-block"><a class="nav-link px-2" data-toggle="fullscreen" data-plugin="fullscreen"><i data-feather="maximize"></i></a></li>
+                <li class="nav-item dropdown"><a class="nav-link px-2"><i data-feather="upload" class="d-lg-none"></i><span class="btn btn-rounded btn-sm gd-primary text-white d-none d-lg-block">Upload</span></a></li>
+                <li class="nav-item dropdown"><a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color"><span class="avatar w-24"><img src="/Bepop/assets/img/a1.jpg" alt="..."></span></a><div class="dropdown-menu dropdown-menu-right mt-3 animate fadeIn"><a class="dropdown-item" href="#"><span>Profile</span></a><a class="dropdown-item" href="#"><span>Tracks</span></a><a class="dropdown-item" href="#"><span>Albums</span></a><div class="dropdown-divider"></div><a class="dropdown-item" href="#">Sign out</a></div></li>
+                <li class="nav-item d-lg-none"><a href="#" class="nav-link px-2" data-toggle="collapse" data-target="#navbarCollapse"><i data-feather="menu"></i></a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div id="main" class="layout-row flex">
+        <div id="content" class="flex">
+            <div class="page-content page-container" id="page-content">
+                <div class="padding sr">
+
+                    <div class="page-hero"><div class="media bg-media"><div class="media-content" style="background-image:url(/Bepop/assets/img/b9.jpg)"></div></div><div class="slick" data-plugin="slick" data-option="{ slidesToShow: 1, slidesToScroll: 1, dots: true, arrows: false, fade: true, autoplay: false, rtl: false }"><div data-bg="/Bepop/assets/img/b9.jpg"><div class="pos-rlt"><h2 class="display-3 font-weight-bold text-white">Amazing songs</h2><div class="col-6 px-0 py-3 text-muted"><p>Senin için özel olarak seçilmiş harika şarkıları keşfetmeye başla!</p></div><a href="/Home/Genres" class="btn btn-rounded gd-primary text-white">Türlere Göz At</a><a href="#" class="btn no-bg text-white">Paylaş</a></div></div><div data-bg="/Bepop/assets/img/b0.jpg" style="visibility: hidden"><div class="pos-rlt"><h2 class="display-3 font-weight-bold text-white">Bepop top listeleri</h2><div class="col-6 px-0 py-3 text-muted"><p>Haftanın en popüler şarkılarını ve yeni çıkanları kaçırma.</p></div><a href="/Home/Charts" class="btn btn-rounded gd-primary text-white">Listeleri Gör</a><a href="#" class="btn no-bg text-white">Paylaş</a></div></div><div data-bg="/Bepop/assets/img/b19.jpg" style="visibility: hidden"><div class="pos-rlt"><h2 class="display-3 font-weight-bold text-white">Popüler sanatçıları bul</h2><div class="col-6 px-0 py-3 text-muted"><p>Favori sanatçılarını takip et ve yenilerini keşfet.</p></div><a href="/Home/Artists" class="btn btn-rounded gd-primary text-white">Sanatçıları Keşfet</a><a href="#" class="btn no-bg text-white">Paylaş</a></div></div></div></div>
+
+                    <div class="heading pt-5"><h5 class="text-highlight sr-item"><i class="bi bi-stars text-info"></i> AI Analizi</h5></div>
+                    <div class="card bg-gradient p-4 rounded-4 mb-5 border-0 shadow-sm sr-item" style="background: linear-gradient(135deg, #1b1b1f, #222233);"><p class="text-light mb-0 fs-6">@ViewBag.AIMessage</p></div>
+
+                    <div class="heading pt-3 pb-3 d-flex"><div><h5 class="text-highlight sr-item"><i class="bi bi-lightning-charge-fill text-warning"></i> AI Tarafından Önerilen Şarkılar</h5></div><span class="flex"></span></div>
+                    <div class="row row-lg sr-item">
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var song in Model)
+                            {
+                                <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                                    <div class="list-item list-hover r mb-5">
+                                        <div class="media">
+                                            <a href="#" class="media-content play-song" data-id="@song.SongId" style="background-image:url('@(!string.IsNullOrEmpty(song.CoverUrl) ? song.CoverUrl : "/Bepop/assets/img/default-cover.jpg")'); background-size: cover; background-position: center;"></a>
+                                            <div class="media-action media-action-overlay">
+                                                <button class="btn btn-icon no-bg no-shadow hide-row" data-toggle-class><i data-feather="heart" class="active-fill"></i></button>
+                                                <button class="btn btn-raised btn-icon btn-rounded bg--white btn-play play-song" data-id="@song.SongId"></button>
+                                                <button class="btn btn-icon no-bg no-shadow hide-row btn-more" data-toggle="dropdown"><i data-feather="more-horizontal"></i></button>
+                                                <div class="dropdown-menu dropdown-menu-right"></div>
+                                            </div>
+                                        </div>
+                                        <div class="list-content text-center">
+                                            <div class="list-body">
+                                                <a href="#" class="list-title title h-1x">@song.Title</a>
+                                                <a href="#" class="list-subtitle d-block text-muted h-1x">@song.Artist</a>
+                                                <small class="text-info d-block mt-1">🎚️ Level: @song.Level | ⭐ @song.Score.ToString("0.00")</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-12"><div class="alert alert-secondary bg-transparent border border-secondary text-center text-light rounded-3"><i class="bi bi-emoji-neutral"></i> Henüz önerilecek şarkı bulunamadı.</div></div>
+                        }
+                    </div>
+
+                    <div class="row mt-5">
+
+                        <div class="col-md-5 col-lg-4">
+                            <div class="heading pb-3 d-flex">
+                                <div>
+                                    <h5 class="text-highlight sr-item">
+                                        <i class="bi bi-clock-history text-success"></i> En Son Eklenenler
+                                    </h5>
+                                </div>
+                                <span class="flex"></span>
+                            </div>
+
+                            <div class="card bg-dark border-0 shadow-sm rounded-4 p-3 sr-item">
+                                <div class="list-group list-group-flush">
+                                    @if (latestSongs.Any())
+                                    {
+                                        int index = 0;
+                                        @foreach (var song in latestSongs)
+                                        {
+                                            index++;
+
+                                            <div class="list-group-item bg-transparent border-0 d-flex align-items-center justify-content-between py-3 px-0 border-bottom border-secondary">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="text-muted me-3 fw-semibold" style="min-width: 20px; text-align: right;">@index</span>
+                                                    <a href="#" class="d-flex align-items-center play-song text-decoration-none" data-id="@song.Id">
+                                                        <img src="@(!string.IsNullOrEmpty(song.CoverUrl) ? song.CoverUrl : "/Bepop/assets/img/default-cover.jpg")"
+                                                             alt="@song.Title"
+                                                             class="rounded me-3"
+                                                             style="width:45px; height:45px; object-fit:cover;">
+                                                        <div class="text-truncate" style="max-width: 150px;">
+                                                        
+                                                            <div class="fw-semibold text-white text-truncate">@song.Title</div>
+                                                            <small class="text-muted text-truncate d-block">@song.Artist</small> 
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                                <div class="d-flex align-items-center flex-shrink-0">
+                                              
+                                              
+                                                    <button class="btn btn-icon no-bg no-shadow" data-toggle-class>
+                                                        <i data-feather="heart" class="active-primary text-muted"></i>
+                                                    </button>
+                                                    <button class="btn btn-icon no-bg no-shadow btn-more" data-toggle="dropdown">
+                                                        <i data-feather="more-horizontal" class="text-muted"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right"></div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center py-3 text-muted">Son eklenen şarkı bulunamadı.</div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-lg-8">
+                            <div class="heading pb-3 d-flex">
+                                <div><h5 class="text-highlight sr-item"><i class="bi bi-music-note-list text-primary"></i> Seviyene Uygun Tüm Şarkılar</h5></div>
+                                <span class="flex"></span>
+                            </div>
+                            <div class="row row-sm sr-item">
+                                @if (allSongs.Any())
+                                {
+                                    @foreach (var song in allSongs)
+                                    {
+                                        <div class="col-6 col-sm-6 col-lg-4">
+                                            <div class="list-item list-hover r mb-4">
+                                                <div class="media">
+                                                    <a href="#" class="media-content play-song" data-id="@song.Id" style="background-image:url('@(!string.IsNullOrEmpty(song.CoverUrl) ? song.CoverUrl : "/Bepop/assets/img/default-cover.jpg")'); background-size: cover; background-position: center;"></a>
+                                                    <div class="media-action media-action-overlay">
+                                                        <button class="btn btn-icon no-bg no-shadow hide-row" data-toggle-class><i data-feather="heart" class="active-fill"></i></button>
+                                                        <button class="btn btn-raised btn-icon btn-rounded bg--white btn-play play-song" data-id="@song.Id"></button>
+                                                        <button class="btn btn-icon no-bg no-shadow hide-row btn-more" data-toggle="dropdown"><i data-feather="more-horizontal"></i></button>
+                                                        <div class="dropdown-menu dropdown-menu-right"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="list-content text-center">
+                                                    <div class="list-body">
+                                                        <a href="#" class="list-title title h-1x">@song.Title</a>
+                                                        <a href="#" class="list-subtitle d-block text-muted h-1x">@song.Artist</a>
+                                                        <small class="text-info d-block mt-1">🎚 Level: @song.Level | @song.Genre</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-12"><p class="text-muted text-center">Henüz erişilebilir şarkı bulunamadı 🎵</p></div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer" class="page-footer" style="position: static;"><div class="padding bg-dark b-t"><div class="page-container"><div class="py-5 text-inherit text-hover-primary"><div class="row mb-5"><div class="col-6 col-md-4"><div class="mb-3"><a href="/Home/Index" class="navbar-brand text-white"><svg width="48" height="48" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" fill="#000"></circle><circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="1"></circle></svg><span class="hidden-folded d-inline l-s-n-1x">Bepop</span></a></div></div><div class="col-6 col-md-2"><h5 class="mb-3 text-muted">Pages</h5><ul class="list-unstyled l-h-2x text-highlight"><li><a href="/Home/Artists">Artists</a></li><li><a href="/Home/Charts">Top Charts</a></li><li><a href="/Home/Genres">Genres</a></li><li><a href="#">About Us</a></li><li><a href="/Home/Blog">Blog</a></li></ul></div><div class="col-6 col-md-2"><h5 class="mb-3 text-muted">Your Bepop</h5><ul class="list-unstyled l-h-2x text-highlight"><li><a href="#">Profile</a></li><li><a href="#">Albums</a></li><li><a href="#">Tracks</a></li><li><a href="#">Playlist</a></li><li><a href="#">Liked</a></li></ul></div><div class="col-6 col-md-2"><h5 class="mb-3 text-muted">Help</h5><ul class="list-unstyled l-h-2x text-highlight"><li><a href="#">Documentation</a></li><li><a href="#">Changelog</a></li></ul></div><div class="col-6 col-md-2 text-md-right"><h5 class="mb-3 text-muted">Follow Us</h5><a href="#">Fb</a> <a href="#">Tw</a> <a href="#">Ig</a></div></div><div class="text-center py-5"><span class="text-muted text-sm">&copy; 2025 Bepop - Music Web Application</span></div></div></div></div></footer>
+
+    <script src="/Bepop/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/Bepop/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/Bepop/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/Bepop/libs/pjax/pjax.min.js"></script>
+    <script src="/Bepop/assets/js/ajax.js"></script>
+    <script src="/Bepop/assets/js/lazyload.config.js"></script>
+    <script src="/Bepop/assets/js/lazyload.js"></script>
+    <script src="/Bepop/assets/js/plugin.js"></script>
+    <script src="/Bepop/libs/scrollreveal/dist/scrollreveal.min.js"></script>
+    <script src="/Bepop/libs/slick-carousel/slick/slick.min.js"></script>
+    <script src="/Bepop/libs/feather-icons/dist/feather.min.js"></script>
+    <script src="/Bepop/assets/js/theme.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const token = '@Context.Session.GetString("token")';
+            if (!token) console.warn("⚠️ Token bulunamadı. Dinleme kayıtları çalışmayabilir.");
+            function attachPlayListeners() {
+                document.querySelectorAll(".play-song").forEach(btn => {
+                    // Butona tıklanınca play request göndermesi için event listener ekle
+                    if (!btn.hasAttribute('data-listener-attached')) {
+                        btn.setAttribute('data-listener-attached', 'true');
+                        btn.addEventListener("click", async (e) => {
+                            e.preventDefault(); const songId = btn.dataset.id;
+                            if (!token) { console.error("❌ Dinleme kaydı için token yok."); return; }
+                            console.log("▶️ Oynatılıyor (kayıt gönderiliyor):", songId);
+                            try {
+                                await fetch(`https://localhost:7273/api/songs/play/${songId}`, { method: "POST", headers: { "Authorization": `Bearer ${token}` } });
+                                console.log("✅ Dinleme kaydedildi:", songId);
+                            } catch (err) { console.error("❌ Dinleme kaydı hatası:", err); }
+                        });
+                    }
+                });
+            }
+            attachPlayListeners(); // İlk yüklemede çalıştır
+            if (window.pjax) document.addEventListener('pjax:complete', attachPlayListeners); // Pjax ile sayfa değişince çalıştır
+
+             // Feather ikonlarını etkinleştir (Bepop teması için gerekli)
+             if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        });
+    </script>
+</body>
+</html>
